@@ -1,18 +1,135 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.so
 .Python
-env/
-venv/
-ml-cookbook-env/
-.env
-.pytest_cache/
-.coverage
-htmlcov/
-.DS_Store
 *.egg-info/
 dist/
 build/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
 
+# Virtual Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+ml-cookbook-env/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+.tox/
+nosetests.xml
+coverage.xml
+*.log
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.spyderproject
+.spyproject
+.ropeproject
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.bak
+
+# Documentation (temporarily)
+docs/
+.claude
+.Claude.md
+CLAUDE.md
+
+# Environment & Config
+.env
+.env.local
+*.env
+config.local.yaml
+config.local.yml
+secrets.yaml
+secrets.yml
+
+# ML/Data Science specific
+*.h5
+*.pkl
+*.pickle
+*.joblib
+*.npz
+*.npy
+*.parquet
+*.feather
+data/
+models/
+checkpoints/
+mlruns/
+outputs/
+results/
+logs/
+carbon_logs/
+emissions.csv
+*.ckpt
+*.pth
+*.pt
+*.safetensors
+*.onnx
+*.pb
+
+# Notebooks
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# Wandb
+wandb/
+offline-run*/
+
+# TensorBoard
+runs/
+tensorboard/
+events.out.tfevents.*
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+cache/
+*.cache
+
+# Package locks (optional - you might want to commit these)
+# poetry.lock
+# Pipfile.lock
+# package-lock.json
+# yarn.lock
+
+# Large files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.dmg
+*.iso
+
+# Credentials & API keys
+*.pem
+*.key
+*.crt
+credentials.json
+token.json
+service-account-*.json
 

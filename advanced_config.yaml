@@ -1,0 +1,28 @@
+run:
+  comparison:
+    baseline_path: baseline_results.json
+    confidence_level: 0.95
+    metrics:
+    - accuracy
+    - f1_score
+    - loss
+    test_type: bootstrap
+  logging:
+    experiment: transformer_optimization
+    hyperparameters:
+      batch_size: 64
+      learning_rate: 0.0001
+      model_type: transformer
+      num_heads: 8
+      sequence_length: 512
+    project: advanced-ml
+    tags:
+    - transformer
+    - optimization
+    - production
+    use_tensorboard: true
+    use_wandb: true
+  profiling:
+    bootstrap_samples: 10000
+    track_carbon: true
+    track_gpu: true

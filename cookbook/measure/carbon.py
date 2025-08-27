@@ -15,7 +15,7 @@ try:
     from codecarbon.core.units import Energy, Power
 
     CODECARBON_AVAILABLE = True
-    print("✅ CodeCarbon available - real carbon tracking enabled")
+    print("✅ CodeCarbon available - carbon tracking enabled")
 except ImportError:
     CODECARBON_AVAILABLE = False
     print("⚠️  CodeCarbon not available - install with: pip install codecarbon")
@@ -484,9 +484,9 @@ class CarbonAwareProfiler:
                  experiment_name: str = "carbon-aware-profiling",
                  track_carbon: bool = True):
 
-        # Import our existing profiler (assumes it's available)
+        # Import our existing profiler
         try:
-            from __main__ import PerformanceProfiler
+            from .profiler import PerformanceProfiler
             self.performance_profiler = PerformanceProfiler(
                 track_gpu=True,
                 track_carbon=False  # We'll handle carbon tracking separately

@@ -17,6 +17,7 @@ class TestType(Enum):
     BOOTSTRAP = "bootstrap"
     MANN_WHITNEY = "mann-whitney"
     PERMUTATION = "permutation"
+    BAYESIAN = "bayesian"
 
 
 class EffectSize(Enum):
@@ -135,6 +136,8 @@ class StatisticalValidator:
             result = self._mann_whitney_test(baseline, treatment, effect_size_type)
         elif test_type == TestType.PERMUTATION:
             result = self._permutation_test(baseline, treatment, effect_size_type)
+        elif test_type == TestType.BAYESIAN:
+            result = self._bayesian_test(baseline, treatment, effect_size_type)
         else:
             raise ValueError(f"Unknown test type: {test_type}")
 
@@ -290,6 +293,43 @@ class StatisticalValidator:
 
         return StatisticalResult(
             test_type="permutation",
+            p_value=p_value,
+            effect_size=effect_size,
+            effect_size_type=effect_size_type.value,
+            confidence_interval=(ci_lower, ci_upper),
+            confidence_level=self.confidence_level
+        )
+
+    def _bayesian_test(self, baseline: np.ndarray, treatment: np.ndarray,
+                       effect_size_type: EffectSize) -> StatisticalResult:
+        """Perform Bayesian hypothesis test (simplified version)"""
+        
+        # Use normal approximation for simplicity
+        # In production, would use MCMC or analytical solutions
+        mean_a, var_a = np.mean(baseline), np.var(baseline, ddof=1)
+        mean_b, var_b = np.mean(treatment), np.var(treatment, ddof=1)
+        
+        # Posterior distribution of difference (normal approximation)
+        post_mean = mean_b - mean_a
+        post_var = var_a/len(baseline) + var_b/len(treatment)
+        post_std = np.sqrt(post_var)
+        
+        # Probability that treatment > baseline (one-sided)
+        prob_positive = 1 - stats.norm.cdf(0, post_mean, post_std)
+        
+        # For two-sided test, use the minimum of both tails
+        p_value = 2 * min(prob_positive, 1 - prob_positive)
+        
+        # Calculate effect size
+        effect_size = self._calculate_effect_size(baseline, treatment, effect_size_type)
+        
+        # Credible interval (Bayesian confidence interval)
+        z_score = stats.norm.ppf(1 - (1 - self.confidence_level) / 2)
+        ci_lower = post_mean - z_score * post_std
+        ci_upper = post_mean + z_score * post_std
+        
+        return StatisticalResult(
+            test_type="bayesian",
             p_value=p_value,
             effect_size=effect_size,
             effect_size_type=effect_size_type.value,

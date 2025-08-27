@@ -7,6 +7,8 @@ from typing import Dict, List, Tuple
 import json
 from pathlib import Path
 
+from cookbook import StatisticalValidator, TestType
+
 
 def validate_statistical_validator():
     """Comprehensive validation of statistical validator"""
@@ -232,6 +234,10 @@ def validate_statistical_validator():
     return results
 
 
+def demo_fixed_validator():
+    pass
+
+
 def create_validation_demo():
     """Create portfolio-quality demo of statistical validator"""
 
@@ -332,7 +338,7 @@ def run_statistical_validator_validation():
         'timestamp': int(time.time())
     }
 
-    report_path = "/content/cookbook/logs/statistical_validator_validation.json"
+    report_path = "./logs/statistical_validator_validation.json"
     with open(report_path, 'w') as f:
         json.dump(report_data, f, indent=2, default=str)
 

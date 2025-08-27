@@ -8,6 +8,10 @@ from pathlib import Path
 from typing import Dict, Any, List
 import os
 
+from cookbook import CarbonTracker
+from cookbook.measure import CarbonMetrics, CarbonAwareProfiler
+from cookbook.measure.carbon import CODECARBON_AVAILABLE
+
 
 def validate_codecarbon_integration():
     """Comprehensive validation of CodeCarbon integration"""
@@ -456,7 +460,7 @@ def create_sustainability_demo():
     tracker = CarbonTracker(
         project_name="sustainability-demo",
         experiment_name="portfolio_showcase",
-        output_dir="/content/cookbook/carbon_logs"
+        output_dir="./carbon_logs"
     )
 
     scenario_results = []
@@ -550,7 +554,7 @@ def run_codecarbon_validation():
         'project_status': 'COMPLETED' if suite_status['suite_complete'] else 'PARTIAL'
     }
 
-    report_path = "/content/cookbook/logs/final_measurement_suite_validation.json"
+    report_path = "./logs/final_measurement_suite_validation.json"
     with open(report_path, 'w') as f:
         json.dump(final_report, f, indent=2, default=str)
 

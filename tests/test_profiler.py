@@ -8,6 +8,8 @@ import numpy as np
 from typing import List, Dict
 import json
 
+from cookbook import PerformanceProfiler
+
 
 class ProfilerValidator:
     """Validates profiler accuracy against known baselines"""
@@ -242,18 +244,19 @@ def run_profiler_validation():
     validator.visualize_results(results)
 
     # Save validation report
-    with open('/content/cookbook/logs/profiler_validation.json', 'w') as f:
+    import os
+    log_dir = 'logs'
+    os.makedirs(log_dir, exist_ok=True)
+    validation_path = os.path.join(log_dir, 'profiler_validation.json')
+    with open(validation_path, 'w') as f:
         json.dump(results, f, indent=2, default=str)
 
-    print(f"\n💾 Validation report saved to: /content/cookbook/logs/profiler_validation.json")
+    print(f"\n💾 Validation report saved to: {validation_path}")
 
     return results
 
 
 # Run validation when this cell executes
 if __name__ == "__main__":
+    print("Starting validation now...")
     validation_results = run_profiler_validation()
-
-# Execute immediately in this cell
-print("Starting validation now...")
-validation_results = run_profiler_validation()

@@ -1,0 +1,12 @@
+run:
+  logging:
+    experiment: my_experiment
+    hyperparameters:
+      batch_size: 32
+      learning_rate: 0.001
+    project: ml-cookbook
+    tags:
+    - demo
+  profiling:
+    track_carbon: true
+    track_gpu: true

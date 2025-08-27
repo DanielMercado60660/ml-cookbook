@@ -29,7 +29,7 @@ try:
         StatisticalValidator,
         TestType,
         EffectSize,
-        SimpleCarbonTracker,
+        CarbonTracker,
         CookbookCLI, CarbonTracker
 )
 

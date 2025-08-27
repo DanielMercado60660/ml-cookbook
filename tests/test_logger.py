@@ -7,6 +7,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+import cookbook.measure.logger
+
 
 def validate_logger_functionality():
     """Validate logger meets Quality Gates"""
@@ -19,11 +21,11 @@ def validate_logger_functionality():
     print("📝 Test 1: Basic logging functionality...")
 
     try:
-        logger = create_logger(
+        logger = cookbook.measure.logger.create_logger(
             project_name="ml-cookbook-validation",
             experiment_name="logger_test",
             tags=["validation", "test"],
-            log_dir="/content/cookbook/logs"
+            log_dir="./logs"
         )
 
         # Test hyperparameter logging
@@ -70,7 +72,7 @@ def validate_logger_functionality():
 
     try:
         # Check if JSONL file was created
-        log_files = list(Path("/content/cookbook/logs").glob("*/metrics.jsonl"))
+        log_files = list(Path("./logs").glob("*/metrics.jsonl"))
 
         if log_files:
             latest_log = max(log_files, key=lambda p: p.stat().st_mtime)
@@ -124,8 +126,8 @@ def validate_logger_functionality():
     print("\n🔌 Test 3: Backend availability...")
 
     backend_status = {
-        'wandb_available': WANDB_AVAILABLE,
-        'tensorboard_available': TENSORBOARD_AVAILABLE,
+        'wandb_available': cookbook.measure.logger.WANDB_AVAILABLE,
+        'tensorboard_available': cookbook.measure.logger.TENSORBOARD_AVAILABLE,
         'local_always_available': True
     }
 
@@ -173,7 +175,7 @@ def visualize_logger_demo():
     print("\n📊 Creating logger demonstration...")
 
     # Run the demo to get data
-    logger, summary = demo_logger()
+    logger, summary = cookbook.measure.logger.demo_logger()
 
     # Extract metrics for plotting
     metrics_data = {}
@@ -256,7 +258,7 @@ def run_logger_validation():
         demo_fig = None
 
     # Save validation report
-    report_path = "/content/cookbook/logs/logger_validation.json"
+    report_path = "./logs/logger_validation.json"
     with open(report_path, 'w') as f:
         json.dump(validation_results, f, indent=2, default=str)
 

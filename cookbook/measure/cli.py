@@ -2,26 +2,32 @@
 # Professional command-line interface: cookbook-prof run --config run.yaml
 
 import argparse
-import yaml
 import json
-import sys
 import os
+from dataclasses import asdict
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-import importlib.util
-from dataclasses import asdict
 
-# Import our components (assumes they're available)
-# In practice, these would be proper package imports
+import yaml
+
+# Import our components from the proper package modules
 try:
-    # These should be the classes we built earlier
-    from __main__ import PerformanceProfiler, ExperimentLogger, StatisticalValidator
-    from __main__ import ExperimentConfig, TestType, EffectSize
-
+    from .profiler import PerformanceProfiler
+    from .logger import ExperimentLogger, ExperimentConfig
+    from .validator import StatisticalValidator, TestType, EffectSize
+    
     COMPONENTS_AVAILABLE = True
-except ImportError:
-    COMPONENTS_AVAILABLE = False
-    print("⚠️  Warning: Components not found. Run this after loading the profiler, logger, and validator.")
+except ImportError as e:
+    # Fallback to direct imports if running as a script
+    try:
+        from cookbook.measure.profiler import PerformanceProfiler
+        from cookbook.measure.logger import ExperimentLogger, ExperimentConfig
+        from cookbook.measure.validator import StatisticalValidator, TestType, EffectSize
+        
+        COMPONENTS_AVAILABLE = True
+    except ImportError:
+        COMPONENTS_AVAILABLE = False
+        print("⚠️  Warning: Components not found. Please ensure cookbook.measure is properly installed.")
 
 
 class CookbookCLI:
@@ -60,7 +66,7 @@ Examples:
   # Start experiment logging
   cookbook-prof experiment --name "transformer_v2" --project "ml-cookbook"
 
-For more information: https://github.com/your-username/ml-cookbook
+
             """
         )
 

@@ -1,6 +1,6 @@
 # Project 1.1: CLI Interface Validation Suite
 # Test the cookbook-prof CLI meets Quality Gates and portfolio standards
-
+import argparse
 import tempfile
 import os
 import json
@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Dict, Any, List
 import subprocess
 import sys
+
+from cookbook import CookbookCLI
 
 
 def validate_cli_functionality():
@@ -432,7 +434,7 @@ def run_cli_validation():
         'timestamp': time.time()
     }
 
-    report_path = "/content/cookbook/logs/cli_validation.json"
+    report_path = "./logs/cli_validation.json"
     with open(report_path, 'w') as f:
         json.dump(report_data, f, indent=2, default=str)
 

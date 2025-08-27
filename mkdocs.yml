@@ -1,15 +1,13 @@
-#site_name: ML Cookbook - Professional ML Engineering Toolkit
+#site_name: ML Cookbook -  ML Toolkit
 #site_description: Comprehensive, production-ready toolkit for measuring, validating, and optimizing ML systems with sustainability awareness
-#site_author: Daniel Mercado
-#site_url: https://DanielMercado60660.github.io/ml-cookbook
+site_author: Daniel Mercado
+site_url: https://DanielMercado60660.github.io/ml-cookbook
 
 # Repository information
-#repo_name: DanielMercado60660/ml-cookbook
-#repo_url: https://github.com/DanielMercado60660/ml-cookbook
-#edit_uri: edit/main/docs/
+repo_name: DanielMercado60660/ml-cookbook
+repo_url: https://github.com/DanielMercado60660/ml-cookbook
+edit_uri: edit/main/docs/
 
-# Copyright
-#copyright: Copyright &copy; 2025 Daniel Mercado
 
 # Configuration
 theme:
