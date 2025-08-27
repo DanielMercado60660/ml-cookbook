@@ -1,0 +1,135 @@
+#site_name: ML Cookbook - Professional ML Engineering Toolkit
+#site_description: Comprehensive, production-ready toolkit for measuring, validating, and optimizing ML systems with sustainability awareness
+#site_author: Daniel Mercado
+#site_url: https://DanielMercado60660.github.io/ml-cookbook
+
+# Repository information
+#repo_name: DanielMercado60660/ml-cookbook
+#repo_url: https://github.com/DanielMercado60660/ml-cookbook
+#edit_uri: edit/main/docs/
+
+# Copyright
+#copyright: Copyright &copy; 2025 Daniel Mercado
+
+# Configuration
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.annotate
+    - content.code.copy
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+# Plugins
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [cookbook]
+          options:
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: false
+            docstring_style: google
+            merge_init_into_class: true
+
+# Navigation
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: tutorials/installation.md
+    - Quick Start: tutorials/quick_start.md
+    - Basic Usage: tutorials/basic_usage.md
+  - Components:
+    - Performance Profiler: tutorials/performance_profiler.md
+    - Experiment Logger: tutorials/experiment_logger.md
+    - Statistical Validator: tutorials/statistical_validator.md
+    - Carbon Tracker: tutorials/carbon_tracker.md
+    - CLI Interface: tutorials/cli_interface.md
+  - Examples:
+    - Performance Profiling: examples/performance_profiling.md
+    - Experiment Logging: examples/experiment_logging.md
+    - Statistical Validation: examples/statistical_validation.md
+    - Carbon Tracking: examples/carbon_tracking.md
+    - Complete Pipeline: examples/complete_pipeline.md
+  - API Reference:
+    - Profiler: api/profiler.md
+    - Logger: api/logger.md
+    - Validator: api/validator.md
+    - Carbon: api/carbon.md
+    - CLI: api/cli.md
+  - Advanced:
+    - Production Deployment: advanced/production_deployment.md
+    - Integration Guide: advanced/integration_guide.md
+    - Troubleshooting: advanced/troubleshooting.md
+  - About:
+    - Portfolio Impact: about/portfolio_impact.md
+    - Contributing: about/contributing.md
+    - License: about/license.md
+
+# Social links
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/DanielMercado60660/ml-cookbook
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/N/A
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:none_of_your_bussiness@keepout.com
+
+# Custom CSS
+extra_css:
+  - stylesheets/extra.css
+
+# Analytics (optional)
+# extra:
+#   analytics:
+#     provider: google
+#     property: G-XXXXXXXXXX

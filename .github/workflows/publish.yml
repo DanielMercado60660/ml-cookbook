@@ -1,0 +1,183 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      test_pypi:
+        description: 'Publish to Test PyPI'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+        
+    - name: Build package
+      run: |
+        python -m build
+        
+    - name: Check distribution
+      run: |
+        twine check dist/*
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+  test-install:
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, "3.10", "3.11"]
+    
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+        
+    - name: Test wheel installation
+      run: |
+        pip install dist/*.whl
+        
+    - name: Test package functionality
+      run: |
+        python -c "from cookbook.measure import PerformanceProfiler; print('✅ Package works')"
+        cookbook-prof --help
+
+  publish-test-pypi:
+    runs-on: ubuntu-latest
+    needs: [build, test-install]
+    if: github.event.inputs.test_pypi == 'true'
+    environment:
+      name: test-pypi
+      url: https://test.pypi.org/p/ml-cookbook
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+        
+    - name: Publish to Test PyPI
+      uses: pypa/gh-action-pypi-publish@v1.8.10
+      with:
+        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        repository-url: https://test.pypi.org/legacy/
+
+  publish-pypi:
+    runs-on: ubuntu-latest
+    needs: [build, test-install]
+    if: github.event_name == 'release' && github.event.action == 'published'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/ml-cookbook
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+        
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@v1.8.10
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+
+  update-docs:
+    runs-on: ubuntu-latest
+    needs: publish-pypi
+    if: github.event_name == 'release' && github.event.action == 'published'
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install mkdocs-material mkdocstrings[python]
+        
+    - name: Update version in docs
+      run: |
+        # Update installation instructions with new version
+        VERSION=$(python -c "import cookbook; print(cookbook.__version__)")
+        sed -i "s/ml-cookbook==[0-9.]*/ml-cookbook==$VERSION/g" docs/tutorials/installation.md
+        
+    - name: Build and deploy documentation
+      run: |
+        mkdocs build
+        mkdocs gh-deploy --force
+        
+  create-github-release:
+    runs-on: ubuntu-latest
+    needs: publish-pypi
+    if: github.event_name == 'release' && github.event.action == 'published'
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+        
+    - name: Upload release assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: dist/
+        asset_name: ml-cookbook-dist
+        asset_content_type: application/zip
+
+  notify-success:
+    runs-on: ubuntu-latest
+    needs: [publish-pypi, update-docs]
+    if: always() && (needs.publish-pypi.result == 'success')
+    
+    steps:
+    - name: Notify success
+      run: |
+        echo "🎉 ML Cookbook successfully published!"
+        echo "📦 PyPI: https://pypi.org/project/ml-cookbook/"
+        echo "📚 Docs: https://yourusername.github.io/ml-cookbook/"
+        echo "🏷️ Release: ${{ github.event.release.tag_name }}"
