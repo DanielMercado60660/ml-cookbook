@@ -1,0 +1,4 @@
+{"timestamp": 1756254323.156199, "experiment_id": "complete_test_1756254323", "config": {"project_name": "ml-cookbook-integration", "experiment_name": "complete_test", "tags": ["integration", "test"], "notes": "", "use_wandb": false, "use_tensorboard": false, "use_local": true, "log_dir": "./logs"}, "event_type": "experiment_start"}
+{"timestamp": 1756254323.15645, "hyperparameters": {"learning_rate": 0.001, "batch_size": 32, "model_params": 5560}, "event_type": "hyperparameters"}
+{"timestamp": 1756254323.156513, "step": 1, "metrics": {"train/loss": 0.5, "train/accuracy": 0.85, "profiler/peak_ram_mb": 364.3125, "profiler/wall_time_s": 0.1051789159537293}, "event_type": "metrics"}
+{"timestamp": 1756254323.156565, "experiment_id": "complete_test_1756254323", "total_metrics_logged": 1, "event_type": "experiment_end"}
