@@ -1,5 +1,7 @@
 # Project 1.1: The Measurement Suite - CodeCarbon Integration
 # carbon footprint tracking for ML workloads
+#nooodle noodle demo word for github
+
 
 import os
 import json
